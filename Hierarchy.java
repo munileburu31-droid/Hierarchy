@@ -86,6 +86,8 @@ interface Hierarchy {
 class HierarchyFilter {
     public static Hierarchy filter(Hierarchy hierarchy, java.util.function.IntPredicate nodeIdPredicate) {
         // todo implement
+
+
         return new ArrayBasedHierarchy(new int[0], new int[0]);
     }
 }
