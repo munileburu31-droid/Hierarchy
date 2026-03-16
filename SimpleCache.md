@@ -48,22 +48,23 @@ public class SimpleCache<K, V> {
 }
 
 
-//Code Review:
-//Expired items are never removed from the cache; they remain in memory even after they are no longer valid.
-//        Impact: Memory usage keeps increasing and can eventually crash the application.
-//
-// Cache cleanup happens only when a key is read; unused expired entries are never cleaned.
-//Impact: Old data stays in memory and reduces cache efficiency over time.
-//
-// The expiration logic uses system clock time, which can change unexpectedly.
-//Impact: Cache entries may expire too early or too late, causing unpredictable behavior.
-//
-// There is no limit on the cache size, so entries can grow without control.
-//        Impact: Continuous writes can lead to high memory usage and OutOfMemory errors.
-//
-// The expiration check and value access are not fully atomic despite using a concurrent map.
-//        Impact: Under heavy concurrency, stale or inconsistent data may be returned.
-//
-// Multiple threads may recompute the same value when an entry expires at the same time.
-//        Impact: This can overload downstream systems and cause latency spikes.
+// Code Review:
+
+// Expired cache entries are not automatically removed and remain in memory even after becoming invalid.
+// Impact: Memory consumption continues to grow and may eventually cause the application to crash.
+
+// Cache cleanup only occurs when a key is accessed; expired entries that are never read remain in memory.
+// Impact: Stale data accumulates over time and reduces overall cache effectiveness.
+
+// The expiration mechanism relies on system clock time, which can change unexpectedly.
+// Impact: Cache entries may expire sooner or later than intended, leading to inconsistent behavior.
+
+// There is no restriction on the cache size, allowing it to grow indefinitely.
+// Impact: Continuous additions can increase memory usage and potentially trigger OutOfMemory errors.
+
+// The expiration validation and value retrieval are not fully atomic even with a concurrent map.
+// Impact: In high-concurrency scenarios, outdated or inconsistent values might be returned.
+
+// When an entry expires, multiple threads may recompute the value simultaneously.
+// Impact: This can create unnecessary load on downstream services and increase latency.
 ```
